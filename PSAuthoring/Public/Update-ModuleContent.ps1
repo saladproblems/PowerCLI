@@ -17,9 +17,9 @@
         $beforeHash = Get-FileHash -Path $modulePath
 
         $ps1Files = Get-ChildItem $Module.Directory -filter *.ps1 -Recurse |
-        Where-Object { $PSItem.Name -notmatch 'tests\.ps1' -and $PSItem.Extension -EQ '.ps1' -and $PSItem.DirectoryName -notmatch '\\tests$' } |
-        Sort-Object Name |
-        ForEach-Object {
+            Where-Object { $PSItem.Name -notmatch 'tests\.ps1' -and $PSItem.Extension -EQ '.ps1' -and $PSItem.DirectoryName -notmatch '\\tests$' } |
+            Sort-Object Name |
+            ForEach-Object {
             Add-Member -InputObject $PSItem -PassThru -NotePropertyName Content -NotePropertyValue ($_ | Get-Content)
         }
 
@@ -38,7 +38,7 @@
         if ($beforeHash.Hash -ne (Get-FileHash -Path $modulePath).Hash) {
             Write-Host "Module content updated: $modulePath" -ForegroundColor Green
             if (-not $DoNotIncrementVersion.IsPresent) {
-                $version = [Version]::new( [math]::Max(0,$version.Major), [math]::Max(0,$version.Minor), [math]::Max(0,$version.Build), [math]::Max(0,$version.Revision + 1) )
+                $version = [Version]::new( [math]::Max(0, $version.Major), [math]::Max(0, $version.Minor), [math]::Max(0, $version.Build), [math]::Max(0, $version.Revision + 1) )
             }
             $version | Write-Verbose
         }
